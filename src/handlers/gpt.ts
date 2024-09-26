@@ -23,6 +23,8 @@ const conversations = {};
 
 const handleMessageGPT = async (message: Message, prompt: string) => {
 	try {
+		const media_promsie = message.downloadMedia();
+
 		// Get last conversation
 		const lastConversationId = conversations[message.from];
 
@@ -61,7 +63,7 @@ const handleMessageGPT = async (message: Message, prompt: string) => {
 
 			cli.print(`[GPT] New conversation for ${message.from} (ID: ${response.id})`);
 		}
-		
+
 		// Set conversation id
 		conversations[message.from] = response.id;
 
@@ -94,28 +96,28 @@ const handleDeleteConversation = async (message: Message) => {
 
 async function sendVoiceMessageReply(message: Message, gptTextResponse: string) {
 	var logTAG = "[TTS]";
-	var ttsRequest = async function (): Promise<Buffer | null> {
+	var ttsRequest = async function(): Promise<Buffer | null> {
 		return await speechTTSRequest(gptTextResponse);
 	};
 
 	switch (config.ttsMode) {
 		case TTSMode.SpeechAPI:
 			logTAG = "[SpeechAPI]";
-			ttsRequest = async function (): Promise<Buffer | null> {
+			ttsRequest = async function(): Promise<Buffer | null> {
 				return await speechTTSRequest(gptTextResponse);
 			};
 			break;
 
 		case TTSMode.AWSPolly:
 			logTAG = "[AWSPolly]";
-			ttsRequest = async function (): Promise<Buffer | null> {
+			ttsRequest = async function(): Promise<Buffer | null> {
 				return await awsTTSRequest(gptTextResponse);
 			};
 			break;
 
 		default:
 			logTAG = "[SpeechAPI]";
-			ttsRequest = async function (): Promise<Buffer | null> {
+			ttsRequest = async function(): Promise<Buffer | null> {
 				return await speechTTSRequest(gptTextResponse);
 			};
 			break;
