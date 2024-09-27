@@ -18,7 +18,7 @@ export let openai: OpenAI;
 export function initOpenAI() {
 	chatgpt = new ChatGPTAPI({
 		apiKey: getConfig("gpt", "apiKey"),
-		// apiBaseUrl:getConfig("gpt", "?"), todo
+		apiBaseUrl: getConfig("gpt", "baseUrl"),
 		completionParams: {
 			model: config.openAIModel,
 			temperature: 0.7,
@@ -29,7 +29,8 @@ export function initOpenAI() {
 
 	openai = new OpenAI(
 		{
-			apiKey: getConfig("gpt", "apiKey")
+			apiKey: getConfig("gpt", "apiKey"),
+			baseURL: getConfig("gpt", "baseUrl")
 		}
 	);
 }

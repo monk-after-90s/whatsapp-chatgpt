@@ -6,6 +6,7 @@ import { AWSPollyEngine } from "./types/aws-polly-engine";
 
 // Environment variables
 import dotenv from "dotenv";
+
 dotenv.config();
 
 // Config Interface
@@ -16,6 +17,7 @@ interface IConfig {
 	// OpenAI
 	openAIModel: string;
 	openAIAPIKeys: string[];
+	openAIBaseUrl: string;
 	maxModelTokens: number;
 	prePrompt: string | undefined;
 
@@ -62,6 +64,7 @@ export const config: IConfig = {
 	whitelistedEnabled: getEnvBooleanWithDefault("WHITELISTED_ENABLED", false),
 
 	openAIAPIKeys: (process.env.OPENAI_API_KEYS || process.env.OPENAI_API_KEY || "").split(",").filter((key) => !!key), // Default: []
+	openAIBaseUrl: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
 	openAIModel: process.env.OPENAI_GPT_MODEL || "gpt-3.5-turbo", // Default: gpt-3.5-turbo
 	maxModelTokens: getEnvMaxModelTokens(), // Default: 4096
 	prePrompt: process.env.PRE_PROMPT, // Default: undefined
@@ -144,7 +147,7 @@ function getEnvPromptModerationBlacklistedCategories(): string[] {
 	if (envValue == undefined || envValue == "") {
 		return ["hate", "hate/threatening", "self-harm", "sexual", "sexual/minors", "violence", "violence/graphic"];
 	} else {
-		return JSON.parse(envValue.replace(/'/g, '"'));
+		return JSON.parse(envValue.replace(/'/g, "\""));
 	}
 }
 

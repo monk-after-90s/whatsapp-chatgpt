@@ -8,6 +8,7 @@ export const GptModule: ICommandModule = {
 	register: (): ICommandsMap => {
 		return {
 			apiKey,
+			baseUrl,
 			maxModelTokens
 		};
 	}
@@ -20,7 +21,7 @@ const apiKey: ICommandDefinition = {
 		// Randomly pick an API key
 		return config.openAIAPIKeys[Math.floor(Math.random() * config.openAIAPIKeys.length)];
 	},
-	execute: function (message: Message, valueStr?: string) {
+	execute: function(message: Message, valueStr?: string) {
 		if (!valueStr) {
 			message.reply(`Invalid value, please give a comma-separated string of OpenAI api keys.`);
 			return;
@@ -30,11 +31,27 @@ const apiKey: ICommandDefinition = {
 	}
 };
 
+const baseUrl: ICommandDefinition = {
+	help: "<value> - Set OpenAI-compatible api server base URL, which ends with '/v1'",
+	hint: "xxxx/v1",
+	data: () => {
+		return config.openAIBaseUrl;
+	},
+	execute: function(message: Message, valueStr?: string) {
+		if (!valueStr) {
+			message.reply(`Invalid value, please give a OpenAI-compatible api server base URL, which ends with '/v1'.`);
+			return;
+		}
+		config.openAIBaseUrl = valueStr.trim();
+		message.reply(`Updated OpenAI-compatible api server base URL: ${config.openAIBaseUrl}`);
+	}
+};
+
 const maxModelTokens: ICommandDefinition = {
 	help: "<value> - Set max model tokens value",
 	hint: "integer",
 	data: config.maxModelTokens,
-	execute: function (message: Message, valueStr?: string) {
+	execute: function(message: Message, valueStr?: string) {
 		const value = parseInt(valueStr || "");
 		if (!value || isNaN(value)) {
 			message.reply(`Invalid value, please give an integer value`);
