@@ -23,8 +23,6 @@ const conversations = {};
 
 const handleMessageGPT = async (message: Message, prompt: string) => {
 	try {
-		const media_promsie = message.downloadMedia();
-
 		// Get last conversation
 		const lastConversationId = conversations[message.from];
 
@@ -47,7 +45,8 @@ const handleMessageGPT = async (message: Message, prompt: string) => {
 		if (lastConversationId) {
 			// Handle message with previous conversation
 			response = await chatgpt.sendMessage(prompt, {
-				parentMessageId: lastConversationId
+				parentMessageId: lastConversationId,
+				imageUrl: (message.media && message.media.data) ? `data:image/jpeg;base64,${message.media.data}` : null
 			});
 		} else {
 			let promptBuilder = "";

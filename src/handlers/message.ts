@@ -59,8 +59,8 @@ async function handleIncomingMessage(message: Message) {
 	}
 	// audio and image
 	if (message.hasMedia) {
-		const media = await message.downloadMedia();
-
+		const media = await message.downloadMedia();// todo 多图
+		message.media = media;
 		// Ignore non-audio media and non-image media
 		if (!media || (!media.mimetype.startsWith("audio/") && !media.mimetype.startsWith("image/"))) return;
 
