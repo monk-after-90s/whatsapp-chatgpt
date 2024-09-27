@@ -419,7 +419,7 @@ Current date: ${currentDate}`;
 						{
 							type: "image_url",
 							image_url: {
-								url: opts.imageUrl
+								url: opts.imageUrl//ToDo URL化
 								// url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
 							}
 						}
