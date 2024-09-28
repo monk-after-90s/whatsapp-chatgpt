@@ -46,7 +46,7 @@ const handleMessageGPT = async (message: Message, prompt: string) => {
 			// Handle message with previous conversation
 			response = await chatgpt.sendMessage(prompt, {
 				parentMessageId: lastConversationId,
-				imageUrl: (message.media && message.media.data) ? `data:image/jpeg;base64,${message.media.data}` : null
+				imageUrl: (message.media && message.media.data && message.media.mimetype.startsWith("image/")) ? `data:image/jpeg;base64,${message.media.data}` : null
 			});
 		} else {
 			let promptBuilder = "";
