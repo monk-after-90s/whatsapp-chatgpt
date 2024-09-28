@@ -23,7 +23,7 @@ import { transcribeOpenAI } from "../providers/openai";
 // For deciding to ignore old messages
 import { botReadyTimestamp } from "../index";
 
-// Handles message
+// Handles message todo 群聊只在被@才触发
 async function handleIncomingMessage(message: Message) {
 	let messageString = message.body;
 	let imgBase64: string = "";
